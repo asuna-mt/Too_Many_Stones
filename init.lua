@@ -6,18 +6,33 @@ too_many_stones = {}
 
 local S = minetest.get_translator("too_many_stones")
 
+-- Mod support
+too_many_stones.mods = (function()
+	local mods = {}
+	for _,mod in ipairs({
+		"default",
+		"everness",
+		"naturalbiomes",
+		"dorwinion",
+		"asuna_core",
+		"base_earth",
+	}) do
+		mods[mod] = minetest.get_modpath(mod) ~= nil
+	end
+	return mods
+end)()
+
 -- Load files
-local default_path = minetest.get_modpath("too_many_stones")
+local tms_path = minetest.get_modpath("too_many_stones")
 
-
-dofile(minetest.get_modpath("too_many_stones") .. "/sounds.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/nodes.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/crafting.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/mapgen.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/wall.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/stairs.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/geodes.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/geodes_lib.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/nodes_glowing.lua")
-dofile(minetest.get_modpath("too_many_stones") .. "/nodes_crystal.lua")
---dofile(minetest.get_modpath("too_many_stones") .. "/flowstones.lua")
+dofile(tms_path .. "/sounds.lua")
+dofile(tms_path .. "/nodes.lua")
+dofile(tms_path .. "/crafting.lua")
+dofile(tms_path .. "/mapgen.lua")
+dofile(tms_path .. "/wall.lua")
+dofile(tms_path .. "/stairs.lua")
+dofile(tms_path .. "/geodes.lua")
+dofile(tms_path .. "/geodes_lib.lua")
+dofile(tms_path .. "/nodes_glowing.lua")
+dofile(tms_path .. "/nodes_crystal.lua")
+--dofile(tms_path .. "/flowstones.lua")

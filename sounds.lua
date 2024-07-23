@@ -148,3 +148,23 @@ function too_many_stones.node_sound_snow_defaults(table)
 	too_many_stones.node_sound_defaults(table)
 	return table
 end
+
+-- Asuna uses default sounds for consistency with default nodes
+if too_many_stones.mods.asuna_core then
+	too_many_stones.node_sound_defaults = default.node_sound_defaults
+	for _,sound in pairs({
+		"stone",
+		"dirt",
+		"sand",
+		"gravel",
+		"wood",
+		"leaves",
+		"grass",
+		"ice",
+		"metal",
+		"water",
+		"snow",
+	}) do
+		too_many_stones["node_sound_" .. sound .. "_defaults"] = default["node_sound_" .. sound .. "_defaults"]
+	end
+end

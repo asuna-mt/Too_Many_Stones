@@ -93,16 +93,93 @@ minetest.register_lbm({
 	end,
 })
 
+-- Lists of source stones for different environments
+local src = {
+	-- Source stone groups
+	stone = {"mapgen_stone"},
+	sand = {},
+	desert_sand = {},
+	silver_sand = {},
+	desert_stone = {},
+	sandstone = {},
+	desert_sandstone = {},
+	silver_sandstone = {},
+
+	-- Select function for selecting multiple source stones/groups
+	select = function(self,...)
+		local nodes = {}
+		for _,group in ipairs({...}) do
+			local stones = self[group]
+			if stones then
+				for _,node in ipairs(self[group]) do
+					table.insert(nodes,node)
+				end
+			else
+				table.insert(nodes,stones)
+			end
+		end
+		return nodes
+	end,
+}
+
+-- ------------- --
+--  Mod Support  --
+-- ------------- --
+
+-- Minetest Game
+if too_many_stones.mods.default then
+	table.insert(src.desert_stone,"default:desert_stone")
+	table.insert(src.sand,"default:sand")
+	table.insert(src.sand,"default:desert_sand")
+	table.insert(src.silver_sand,"default:silver_sand")
+	table.insert(src.sandstone,"default:sandstone")
+	table.insert(src.desert_sandstone,"default:desert_sandstone")
+	table.insert(src.silver_sandstone,"default:silver_sandstone")
+end
+
+-- Everness
+if too_many_stones.mods.everness then
+	for _,stone in ipairs({
+		"everness:coral_desert_stone",
+		"everness:crystal_stone",
+		"everness:cursed_stone_carved",
+		"everness:forsaken_tundra_stone",
+		"everness:mineral_stone",
+		"everness:mineral_cave_stone",
+	}) do
+		table.insert(src.stone,stone)
+	end
+	table.insert(src.desert_stone,"everness:forsaken_desert_stone")
+end
+
+-- Natural Biomes
+if too_many_stones.mods.naturalbiomes then
+	for _,stone in ipairs({
+		"naturalbiomes:bambooforest_rock",
+		"naturalbiomes:mediterran_rock",
+		"naturalbiomes:alpine_rock",
+		"naturalbiomes:outback_ground",
+	}) do
+		table.insert(src.stone,stone)
+	end
+	table.insert(src.sand,"naturalbiomes:palmbeach_sand")
+end
+
+-- Dorwinion (Biomes modpack, Variety)
+if too_many_stones.mods.dorwinion then
+	table.insert(src.stone,"dorwinion:dorwinion")
+end
+
 -- Minetest Game, Mesecraft, and Others
 
-if minetest.get_modpath("default") ~= nil then
+if too_many_stones.mods.default then
 
 -- Blue Agate
 
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_blue",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -127,7 +204,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_gray",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -152,7 +229,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_green",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -177,7 +254,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_moss",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -202,7 +279,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_orange",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -227,7 +304,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_purple",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -252,7 +329,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:agate_red",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -277,7 +354,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:amazonite",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -302,7 +379,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:amber",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -325,7 +402,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:amber",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -350,7 +427,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:amethyst",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -373,7 +450,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:amethyst",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -398,7 +475,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:ammolite",
-		wherein         = {"mapgen_stone", "default:sand"},
+		wherein         = src:select("stone","sand"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 50,
@@ -423,7 +500,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:andesite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 60,
@@ -448,7 +525,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:basalt",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -473,7 +550,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:basalt_columnar",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -498,7 +575,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:black_moonstone",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -521,7 +598,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:black_moonstone",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -546,7 +623,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:calcite_grey",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -571,7 +648,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:calcite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -594,7 +671,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:calcite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 68 * 68 * 68,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -617,7 +694,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:calcite",
-		wherein         = {"default:sand", "default:silver_sand"},
+		wherein         = src:select("sand","silver_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -642,7 +719,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:calcite_orange",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 70,
@@ -667,7 +744,7 @@ if minetest.get_modpath("default") ~= nil then
 		register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:carnotite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -692,12 +769,12 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:celestine",
-		wherein         = {"default:silver_sandstone"},
+		wherein         = too_many_stones.mods.asuna_core and src:select("stone") or src:select("silver_sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
-		heat_min		= 0,
+		heat_min		= too_many_stones.mods.asuna_core and 60 or 0,
 		heat_max		= 100,
-		humidity_min	= 0,
+		humidity_min	= too_many_stones.mods.asuna_core and 60 or 0,
 		humidity_max	= 100,
 		y_max           = 31000,
 		y_min           = -31000,
@@ -717,7 +794,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:citrine",
-		wherein         = {"default:desert_stone"},
+		wherein         = src:select("desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -742,7 +819,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:chalcanthite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 80,
@@ -765,7 +842,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:chalcanthite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 80,
@@ -790,7 +867,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:chrysoprase",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -813,7 +890,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:chrysoprase",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -838,7 +915,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:covellite",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -863,7 +940,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:crocoite",
-		wherein         = {"mapgen_stone","default:desert_stone","default:sandstone"},
+		wherein         = src:select("stone","desert_stone","sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -887,7 +964,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:diorite",
-		wherein         = {"mapgen_stone","default:desert_stone","default:sandstone"},
+		wherein         = src:select("stone","desert_stone","sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 20,
 		heat_min		= 60,
@@ -912,7 +989,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:erythrite",
-		wherein         = {"mapgen_stone","default:desert_stone","default:sandstone"},
+		wherein         = src:select("stone","desert_stone","sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -936,7 +1013,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:eudialite",
-		wherein         = {"mapgen_stone","default:desert_stone","default:sandstone"},
+		wherein         = src:select("stone","desert_stone","sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -961,7 +1038,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:fluorite",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -986,7 +1063,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:gabbro",
-		wherein         = {"mapgen_stone","default:desert_stone","default:sandstone"},
+		wherein         = src:select("stone","desert_stone","sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 20,
 		heat_min		= 60,
@@ -1012,7 +1089,7 @@ if minetest.get_modpath("default") ~= nil then
 		ore_type        = "blob",
 		ore             = "too_many_stones:galena",
 		ore_param2 = 1,
-		wherein         = {"mapgen_stone", "default:sandstone", "default:desert_sandstone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone","sandstone","desert_sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1035,7 +1112,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:galena",
-		wherein         = {"mapgen_stone", "default:sandstone", "default:desert_sandstone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone","sandstone","desert_sandstone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -1060,7 +1137,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_black",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1085,7 +1162,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_blue",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1110,7 +1187,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_gray",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1133,7 +1210,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_gray",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -1158,7 +1235,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_green",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1184,7 +1261,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_pink",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1209,7 +1286,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_red",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -1235,7 +1312,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_white",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1258,7 +1335,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_white",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -1283,7 +1360,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:granite_yellow",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1308,7 +1385,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:heliodor",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1331,7 +1408,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:heliodor",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -1356,7 +1433,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:howlite",
-		wherein         = {"mapgen_stone", "default:silver_sandstone", "default:desert_sandstone", "default:desert_stone"},
+		wherein         = src:select("stone","silver_sandstone","desert_sandstone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1381,7 +1458,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:ilvaite",
-		wherein         = {"mapgen_stone", "default:desert_stone", "default:permafrost"},
+		wherein         = src:select("stone","desert_stone","default:permafrost"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1406,7 +1483,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:jade",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1429,7 +1506,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:jade",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -1454,7 +1531,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:jasper_red",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1479,7 +1556,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:kyanite",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1502,7 +1579,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:kyanite",
-		wherein         = {"default:silver_sand"},
+		wherein         = src:select("silver_sand"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		y_max           = -300,
@@ -1523,7 +1600,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:lapis_lazuli",
-		wherein         = {"default:sandstone", "default:desert_stone", "default:silver_sandstone"},
+		wherein         = src:select("desert_stone","sandstone","silver_sandstone"),
 		clust_scarcity  = 80 * 48 * 80,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1549,7 +1626,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:lepidolite",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1574,7 +1651,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:limestone_blue",
-		wherein         = {"mapgen_stone", "default:sand", "default:desert_sand"},
+		wherein         = src:select("stone","sand","desert_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1599,7 +1676,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:limestone_white",
-		wherein         = {"mapgen_stone", "default:silver_sand"},
+		wherein         = src:select("stone","silver_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1624,7 +1701,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:marble",
-		wherein         = {"mapgen_stone", "default:sandstone", "default:silver_sandstone"},
+		wherein         = src:select("stone","sandstone","silver_sandstone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -1650,7 +1727,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:moonstone",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -1676,7 +1753,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:morion_quartz",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1699,7 +1776,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:morion_quartz",
-		wherein         = {"default:sand", "default:silver_sand", "default:desert_sand"},
+		wherein         = src:select("sand","desert_sand","silver_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		y_max           = -2,
@@ -1720,7 +1797,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:mudstone",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -1745,7 +1822,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:black_opal",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 80 * 80 * 80,
 		clust_size      = 4,
 		y_max           = -1000,
@@ -1765,7 +1842,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:fire_opal",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 80 * 80 * 80,
 		clust_size      = 4,
 		y_max           = -1000,
@@ -1785,7 +1862,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:opal",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 80 * 80 * 80,
 		clust_size      = 4,
 		y_max           = -1000,
@@ -1805,7 +1882,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:picture_jasper",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 80 * 80 * 80,
 		clust_size      = 4,
 		y_max           = -1000,
@@ -1825,7 +1902,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:prasiolite",
-		wherein         = {"mapgen_stone", "default:silver_sandstone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone","silver_sandstone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1848,7 +1925,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:prasiolite",
-		wherein         = {"default:sand", "default:silver_sand", "default:desert_sand"},
+		wherein         = src:select("sand","desert_sand","silver_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		y_max           = -2,
@@ -1869,7 +1946,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:pumice",
-		wherein         = {"mapgen_stone", "default:gravel", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone","default:gravel"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -1913,7 +1990,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:pyrite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 48 * 48 * 48,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1935,7 +2012,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:pyrite",
-		wherein         = {"default:sandstone", "default:desert_stone", "default:silver_sandstone"},
+		wherein         = src:select("desert_stone","sandstone","silver_sandstone"),
 		clust_scarcity  = 80 * 48 * 80,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1960,7 +2037,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:quartz",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1983,7 +2060,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:quartz",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 68 * 68 * 68,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -2006,7 +2083,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:quartz",
-		wherein         = {"default:sand", "default:silver_sand", "default:desert_sand"},
+		wherein         = src:select("sand","desert_sand","silver_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		y_max           = -2,
@@ -2027,7 +2104,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:rhodonite",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -2053,7 +2130,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:rose_quartz",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -2076,7 +2153,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:rose_quartz",
-		wherein         = {"default:sand", "default:silver_sand", "default:desert_sand"},
+		wherein         = src:select("sand","desert_sand","silver_sand"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		y_max           = -2,
@@ -2097,7 +2174,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:scoria",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -2122,7 +2199,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:serpentine",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -2147,7 +2224,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:shale",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -2170,7 +2247,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:shale",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -2195,7 +2272,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:slate",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -2218,7 +2295,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:slate",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -2243,7 +2320,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:smokey_quartz",
-		wherein         = {"default:sandstone", "default:desert_stone"},
+		wherein         = src:select("desert_stone","sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -2268,7 +2345,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:soapstone",
-		wherein         = {"default:sandstone"},
+		wherein         = src:select("sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		y_max           = 31000,
@@ -2287,7 +2364,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:soapstone",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -2312,7 +2389,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:sodalite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -2337,7 +2414,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:sugilite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -2360,7 +2437,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:sugilite",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 68 * 68 * 68,
 		clust_size      = 7,
 		heat_min		= 41,
@@ -2385,7 +2462,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:tourmaline_green",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -2411,7 +2488,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:tourmaline_paraiba",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -2437,7 +2514,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:tourmaline_pink",
-		wherein         = {"mapgen_stone"},
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 10,
 		heat_min		= 0,
@@ -2463,7 +2540,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:travertine",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -2486,7 +2563,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:travertine",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -2509,7 +2586,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:travertine",
-		wherein         = {"default:sandstone"},
+		wherein         = src:select("sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 30,
 		y_max           = 31000,
@@ -2530,7 +2607,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:travertine_yellow",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -2555,7 +2632,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:tuff_beige",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -2580,7 +2657,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:tuff_grey",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -2605,7 +2682,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:tuff_red",
-		wherein         = {"mapgen_stone", "default:desert_stone"},
+		wherein         = src:select("stone","desert_stone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 60,
@@ -2630,7 +2707,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:sandstone_with_turquoise",
-		wherein         = {"default:sandstone"},
+		wherein         = src:select("sandstone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 15,
 --		heat_min		= 20,
@@ -2654,7 +2731,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:desert_sandstone_with_turquoise",
-		wherein         = {"default:desert_sandstone"},
+		wherein         = src:select("desert_sandstone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 15,
 --		heat_min		= 20,
@@ -2678,7 +2755,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:silver_sandstone_with_turquoise",
-		wherein         = {"default:silver_sandstone"},
+		wherein         = src:select("silver_sandstone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 15,
 --		heat_min		= 20,
@@ -2704,7 +2781,7 @@ if minetest.get_modpath("default") ~= nil then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:vivianite",
-		wherein         = {"mapgen_stone", "default:silver_sandstone"},
+		wherein         = src:select("stone","silver_sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -2726,7 +2803,7 @@ if minetest.get_modpath("default") ~= nil then
 
 -- Minebase Version
 
-elseif minetest.get_modpath("base_earth") ~= nil then
+elseif too_many_stones.mods.base_earth then
 
 -- Blue Agate
 
