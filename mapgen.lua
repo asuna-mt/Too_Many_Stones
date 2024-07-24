@@ -130,7 +130,7 @@ local src = {
 if too_many_stones.mods.default then
 	table.insert(src.desert_stone,"default:desert_stone")
 	table.insert(src.sand,"default:sand")
-	table.insert(src.sand,"default:desert_sand")
+	table.insert(src.desert_sand,"default:desert_sand")
 	table.insert(src.silver_sand,"default:silver_sand")
 	table.insert(src.sandstone,"default:sandstone")
 	table.insert(src.desert_sandstone,"default:desert_sandstone")
@@ -1651,7 +1651,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:limestone_blue",
-		wherein         = src:select("stone","sand","desert_sand"),
+		wherein         = src:select("stone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 14,
 		heat_min		= 0,
