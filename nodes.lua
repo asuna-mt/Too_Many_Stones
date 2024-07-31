@@ -2256,14 +2256,6 @@ minetest.register_node("too_many_stones:opal", {
 	groups = {cracky = 3, cyan_stone = 1, stone = 1, opal = 1},
 	sounds = too_many_stones.node_sound_stone_defaults(),
 })
--- Picture Jasper
-minetest.register_node("too_many_stones:picture_jasper", {
-	description = S("picture_jasper"),
-	tiles = {"tms_picture_jasper.png"},
-	is_ground_content = true,
-	groups = {cracky = 3, orange_stone = 1, stone = 1},
-	sounds = too_many_stones.node_sound_stone_defaults(),
-})
 -- Prasiolite
 minetest.register_node("too_many_stones:prasiolite", {
 	description = S("Prasiolite"),
