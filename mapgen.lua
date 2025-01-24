@@ -940,7 +940,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:crocoite",
-		wherein         = src:select("stone","desert_stone","sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -964,7 +964,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:diorite",
-		wherein         = src:select("stone","desert_stone","sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 20,
 		heat_min		= 60,
@@ -989,7 +989,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:erythrite",
-		wherein         = src:select("stone","desert_stone","sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1013,7 +1013,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:eudialite",
-		wherein         = src:select("stone","desert_stone","sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -1063,7 +1063,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:gabbro",
-		wherein         = src:select("stone","desert_stone","sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 20,
 		heat_min		= 60,
@@ -1089,7 +1089,7 @@ if too_many_stones.mods.default then
 		ore_type        = "blob",
 		ore             = "too_many_stones:galena",
 		ore_param2 = 1,
-		wherein         = src:select("stone","desert_stone","sandstone","desert_sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert","desert_sandstone"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1112,7 +1112,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:galena",
-		wherein         = src:select("stone","desert_stone","sandstone","desert_sandstone"),
+		wherein         = src:select("stone","desert_stone","sandstone_desert","desert_sandstone"),
 		clust_scarcity  = 70 * 70 * 70,
 		clust_size      = 14,
 		heat_min		= 41,
@@ -1600,7 +1600,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:lapis_lazuli",
-		wherein         = src:select("desert_stone","sandstone","silver_sandstone"),
+		wherein         = src:select("desert_stone","sandstone_desert","silver_sandstone"),
 		clust_scarcity  = 80 * 48 * 80,
 		clust_size      = 14,
 		heat_min		= 0,
@@ -1701,7 +1701,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:marble",
-		wherein         = src:select("stone","sandstone","silver_sandstone"),
+		wherein         = src:select("stone","sandstone_desert","silver_sandstone"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -1992,7 +1992,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:pyrite",
-		wherein         = src:select("desert_stone","sandstone","silver_sandstone"),
+		wherein         = src:select("desert_stone","sandstone_desert","silver_sandstone"),
 		clust_scarcity  = 80 * 48 * 80,
 		clust_size      = 7,
 		heat_min		= 0,
@@ -2300,7 +2300,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:smokey_quartz",
-		wherein         = src:select("desert_stone","sandstone"),
+		wherein         = src:select("desert_stone","sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 7,
 		heat_min		= 60,
@@ -2325,7 +2325,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:soapstone",
-		wherein         = src:select("sandstone"),
+		wherein         = src:select("sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 14,
 		y_max           = 31000,
@@ -2566,7 +2566,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:travertine",
-		wherein         = src:select("sandstone"),
+		wherein         = src:select("sandstone_desert"),
 		clust_scarcity  = 72 * 72 * 72,
 		clust_size      = 30,
 		y_max           = 31000,
@@ -2687,7 +2687,7 @@ if too_many_stones.mods.default then
 	register_ore_by_climate({
 		ore_type        = "blob",
 		ore             = "too_many_stones:sandstone_with_turquoise",
-		wherein         = src:select("sandstone"),
+		wherein         = src:select("sandstone_desert"),
 		clust_scarcity  = 56 * 56 * 56,
 		clust_size      = 15,
 --		heat_min		= 20,
